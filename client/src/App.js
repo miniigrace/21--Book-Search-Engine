@@ -1,10 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
-import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
 
 const client = new ApolloClient({
@@ -18,6 +17,7 @@ const client = new ApolloClient({
     });
   },
   uri: '/graphql',
+  cache: new InMemoryCache()
 });
 
 function App() {
@@ -26,11 +26,11 @@ function App() {
     <Router>
       <>
         <Navbar />
-        <Switch>
-          <Route exact path='/' component={SearchBooks} />
+        <Routes>
+          <Route path='/' element={<SearchBooks/>} />
           <Route exact path='/saved' component={SavedBooks} />
           <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
-        </Switch>
+        </Routes>
       </>
     </Router>
     </ApolloProvider>
